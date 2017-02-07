@@ -31,6 +31,7 @@ public class Recursion {
 	
 	//testing...
 	public static void main(String[] args){
+		System.out.println(name()); //Hong,William
 		System.out.println(sqrt(0.0)); //0.0
 		System.out.println(sqrt(0.04253)); //0.20622802913376717
 		System.out.println(sqrt(1.0)); //1.0
