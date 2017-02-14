@@ -87,7 +87,7 @@ public class QueenBoard{
 	private void countSolutionsH(int col){
 		int size = board.length;
 		
-		if(col == board.length){
+		if(col == size){
 			solutionCount += 1; }
 		
 		else{
@@ -147,6 +147,7 @@ public class QueenBoard{
 		q.countSolutions();
 		System.out.println(q.getSolutionCount()); //92
 		
+		/**
 		//some other n*n boards...
 		QueenBoard a = new QueenBoard(1);
 		System.out.println("\nHow many solutions for 1x1 board?");
@@ -191,7 +192,7 @@ public class QueenBoard{
 		QueenBoard i = new QueenBoard(10);
 		System.out.println("\nHow many solutions for 10x10 board?");
 		i.countSolutions();
-		System.out.println(i.getSolutionCount()); //724
+		System.out.println(i.getSolutionCount()); //724 */
 		
 	}
 
