@@ -118,21 +118,52 @@ public class KnightBoard{
 	}
 	
 	public static void main(String[] args){
-		KnightBoard k1 = new KnightBoard(5,5);
+	/**	
+		//square boards 4 to 8
+		KnightBoard k1 = new KnightBoard(4,4);
 		k1.solve();
-		System.out.println(k1.toString());
+		System.out.println(k1.toString()); //impossible
 		
-		KnightBoard k2 = new KnightBoard(6,6);
+		KnightBoard k2 = new KnightBoard(5,5);
 		k2.solve();
 		System.out.println(k2.toString());
 		
-		KnightBoard k3 = new KnightBoard(7,7);
+		KnightBoard k3 = new KnightBoard(6,6);
 		k3.solve();
 		System.out.println(k3.toString());
 		
-		KnightBoard k4 = new KnightBoard(8,8);
+		KnightBoard k4 = new KnightBoard(7,7);
 		k4.solve();
-		System.out.println(k4.toString()); 
+		System.out.println(k4.toString());
+		
+		KnightBoard k5 = new KnightBoard(8,8);
+		k5.solve();
+		System.out.println(k5.toString()); 
+		
+		//rectangluar boards
+		KnightBoard k6 = new KnightBoard(5,6);
+		k6.solve();
+		System.out.println(k6.toString());
+
+		KnightBoard k7 = new KnightBoard(6,5);
+		k7.solve();
+		System.out.println(k7.toString());
+		
+		KnightBoard k8 = new KnightBoard(5,7);
+		k8.solve();
+		System.out.println(k8.toString());
+
+		KnightBoard k9 = new KnightBoard(7,5);
+		k9.solve();
+		System.out.println(k9.toString());
+
+		KnightBoard k10 = new KnightBoard(6,7);
+		k10.solve();
+		System.out.println(k10.toString());
+		
+		KnightBoard k11 = new KnightBoard(7,6);
+		k11.solve();
+		System.out.println(k11.toString()); */
 		
 	}
 	
