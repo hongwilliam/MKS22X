@@ -32,6 +32,19 @@ public class Maze{
 		} catch(FileNotFoundException e){
 			System.out.println("Error! File not found");
 			System.exit(1); }
+			
+		//check if an 'S' and 'E' exists
+		int found=0;
+		for (int r=0; r < maze.length; r++){
+			for (int c=0; c < maze[0].length; c++){
+				if (maze[r][c] == 'S' || maze[r][c] == 'E'){
+					found += 1; }
+			}
+		}
+		
+		if (found != 2){
+			System.out.println("Not a valid maze");
+			System.exit(1); }
 	}
 	
 	//copy pasted from course site to help with solving
@@ -44,7 +57,7 @@ public class Maze{
      }
 	 
     public boolean solveH(int r, int c){
-	
+		
 		//from course site
 		if(animate){
             System.out.println("\033[2J\033[1;1H"+this);
@@ -108,7 +121,7 @@ public class Maze{
 			
 	//testing...
 	public static void main (String[] args){
-		/** 
+		/**  
 		Maze f1 = new Maze("data1.dat");
 		System.out.println(f1.toString());	//check out what the maze looks like
 		f1.solve();
@@ -122,10 +135,18 @@ public class Maze{
 		Maze f3 = new Maze("data3.dat");
 		System.out.println(f3.toString());	
 		f3.solve();
-		System.out.println(f3.toString()); */
+		System.out.println(f3.toString()); 
 		
+		//a maze with no solution
+		Maze f4 = new Maze("data4.dat");
+		System.out.println(f4.toString());	
+		f4.solve();
+		System.out.println(f4.toString()); //this will only be filled with dots
 		
-		}
+		//a maze with no start and end
+		Maze f5 = new Maze("data5.dat"); //Not a valid maze
+		*/
+	}
 		
 }
 			
