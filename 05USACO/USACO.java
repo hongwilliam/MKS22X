@@ -6,10 +6,12 @@ import java.io.*;
 
 public class USACO{
 
+	public USACO(){}
+	
 	//bronze problem
-	//scan.nextInt() was the most useful tool for this section of the problem
 	public static int bronze(String filename){
 		int answer = 0;
+		//scan.nextInt() was the most useful tool for this section of the problem
 		try{
 			Scanner scan = new Scanner(new File(filename));
 				
@@ -117,8 +119,7 @@ public class USACO{
 			answer = 5184 * totalDepth;
 			
 		}	
-		catch(FileNotFoundException e){
-						
+		catch(FileNotFoundException e){	
 			System.out.println("Error! File not found");
 			System.exit(1); }
 		
@@ -126,12 +127,86 @@ public class USACO{
 			
 	}
 	
+	//silver problem
+	
+	//instance variables
+	private static char[][] pasture;
+	private static int[][] target; //this stores the coordinates of target
+	private static int time;
+	
+	public static void initialize(String filename){
+		try{ 
+			Scanner scan = new Scanner(new File(filename));
+			
+			//line 1 - field dimensions and time
+			int rows = scan.nextInt(), cols = scan.nextInt();
+			time = scan.nextInt();
+			pasture = new char[rows][cols];
+			
+			//lines 2 to R+1 - pasture
+			scan.nextLine();
+			for (int r=0; r < rows; r++){
+				//take each row as a string
+				String row = scan.nextLine();
+				
+				//then take each individual char of the string
+				for (int c=0; c < cols; c++){
+					pasture[r][c] = row.charAt(c);
+				}
+			}
+			
+			//last line - the coordinates
+			int r1 = scan.nextInt() -1, c1 = scan.nextInt() -1, r2 = scan.nextInt() -1, c2 = scan.nextInt() -1;
+			target = new int[2][2];
+			target[0][0] = r1;
+			target[0][1] = c1;
+			target[1][0] = r2;
+			target[1][1] = c2;
+			
+		} catch(FileNotFoundException e){
+			System.out.println("Error! File not found");
+			System.exit(1);
+		}
+		
+	}
+	
+	private static int silverH(int x, int y, int movesLeft){
+		
+		//base case - are the coordinates in the pasture?
+		if (x < 0 || x >= pasture.length || y < 0 || y >= pasture[0].length){
+			return 0; }
+			
+		//terminating - when the cow reaches its target!
+		if (movesLeft == 0){
+			if (x == target[1][0] && y == target[1][1]){
+				return 1; }
+			else{
+				return 0; }
+		}
+		
+		//terminating - when the cow hits a tree
+		if (pasture[x][y] == '*'){
+			return 0; }
+			
+		//recursion and check all possible moves, tree branches off here
+		return silverH(x, y+1, movesLeft-1) + silverH(x, y-1, movesLeft-1)
+			+ silverH(x+1, y, movesLeft-1) + silverH(x-1, y, movesLeft-1);
+			
+	}
+	
+	public static int silver(String filename){
+		initialize(filename);
+		return silverH(target[0][0], target[0][1], time); }
+	
+	
 	//testing
 	public static void main(String[]args){
 		USACO x = new USACO();
 		System.out.println(x.bronze("testfile1.txt")); //342144
 		System.out.println(x.bronze("testfile2.txt")); //102762432
 		System.out.println(x.bronze("testfile3.txt")); //1058992704
+		
+		System.out.println(x.silver("silverTest1.txt")); //1
 	}
 	
 	
