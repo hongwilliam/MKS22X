@@ -6,54 +6,7 @@ public class Quick{
 	public static int randomWithRange(int min, int max){
 		int range = (max - min) + 1;     
 		return (int)(Math.random() * range) + min; }
-	
-	/** public static int part(int[] data, int start, int end){
-		int randomIndex = randomWithRange(start,end);
-		int partition = data[randomIndex];
-		//System.out.println(partition); //for testing purposes only
-		
-		//finding # of larger elements than partition
-		int largerOrEqual=0, i=start;
-		while(i < end){
-			if (data[i]  >= partition){
-				largerOrEqual += 1; }
-			i += 1;
-		}
 
-		//put the partition where it belongs
-		int swap1 = data[end-largerOrEqual];
-		data[randomIndex] = swap1;
-		data[end-largerOrEqual] = partition;
-		
-		//the last N elements must be occupied by the larger or equal numbers
-		int goLeft = end, goRight = start;
-		while (goRight < end-largerOrEqual && goLeft > end-largerOrEqual){
-			//this is when the element at the end belongs there
-			if (data[goLeft] >= partition){
-				goLeft -= 1; }
-			else{
-				//otherwise, make the swap with the elements in the front
-				//if applicable of course
-				if(data[goRight] >= partition){
-					int greater = data[goRight];
-					data[goRight] = data[goLeft];
-					data[goLeft] = greater;
-					goRight += 1;
-					goLeft -= 1; }	
-				else{
-					goRight += 1; }
-			}
-		}
-
-		for testing purposes only
-		int x=0;
-		while (x < data.length){
-			System.out.print(data[x] + " ");
-			x += 1; }
-		System.out.print("\n"); 
-		
-		return end-largerOrEqual; 
-	} */
 	
 	//i realized my preivous function was a bit slow (2 loops)
 	//after some trial and error...
@@ -62,11 +15,10 @@ public class Quick{
 		int partition = data[randomIndex];
 		//System.out.println(partition); //for testing purposes only
 		
+		/** 
 		//variables that will change dynamically
 		int right = start, left = end, swap1 = 0, swap2 = 0;
 		
-		//this is our only terminating condition, which accounts for duplicates
-		//failing to account for this was the primary problem with my last attempt
 		while (right < left){
 			
 			//when the element at the index going right is equal to partition
@@ -83,7 +35,7 @@ public class Quick{
 				swap1 = data[left];
 				swap2 = data[left-1];
 				data[left] = swap2;
-				data[left-1] = swap1; }
+				data[left-1] = swap1; } 
 				
 			//remember: all items less than partition are to the left
 			if (data[right] > data[left]){
@@ -93,17 +45,43 @@ public class Quick{
 				data[right] = swap2; }
 				
 			//update the index checking variables
+			if (data[left] > partition){
+				left -= 1; }
+				
 			if (data[right] < partition){
 				right += 1; }
 			
-			if (data[left] > partition){
-				left -= 1; }
-			
+		} */
+		
+		//swap the partition and beginning element first
+		data[randomIndex] = data[start];
+		data[start] = partition;
+
+		//these variables help keep track of the elements being compared
+		int i1 = start+1, i2 = start+1, goal = start;
+		//going from left to right, this is a O(N) operation
+		//objective is to get variable "goal" to the end
+		while (i1 <= end){
+			if (data[i1] < partition){
+				
+				int larger = data[i2];
+				//data[i] is small so keep it to left of partition
+				data[i2] = data[i1];
+				
+				//as the i is farther down to the right, it should assume "larger" values
+				data[i1] = larger;
+				
+				//our "goal" is being updated as well
+				goal = i2;
+				i2 += 1; }
+				
+			i1 += 1;
 		}
-		
-		//this is the final index
-		return right;
-		
+	
+		data[start] = data[goal];
+		data[goal] = partition;
+
+		return goal;
 	}
 	
 	public static int quickselect(int[] data, int k){
@@ -119,13 +97,15 @@ public class Quick{
 		while (answer != k){
 			//shrink the section of array we want to look at
 				
-			//choice 1: eliminate smaller choices
-			if (answer > k){
-				answer = part(data,k,end); }
+			//choice 1: eliminate smaller choices (left)
+			if (answer < k){
+				start = answer+1;
+				answer = part(data,start,end); }
 				
-			//choice 2: eliminate larger choices
+			//choice 2: eliminate larger choices (right)
 			else{
-				answer = part(data,start,k); }
+				end = answer-1;
+				answer = part(data,start,end); }
 					
 		}
 		
@@ -134,7 +114,7 @@ public class Quick{
 	
 	//testing...
 	public static void main (String[] args){
-		Quick x = new Quick();
+		/* Quick x = new Quick();
 		
 		// int[] test3 = new int[]{};
 		//System.out.println(quickselect(test3,0));//Invalid k
@@ -157,20 +137,19 @@ public class Quick{
 		System.out.println(x.quickselect(test2,99)); //100
 		//System.out.println(quickselect(test2,100)); //Invalid k 
 
-		/* unfortunately, these cases don't work 
 		int[] test4 = new int[]{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3};
 		System.out.println(x.quickselect(test4,4)); //3
 		System.out.println(x.quickselect(test4,3)); //3
 		System.out.println(x.quickselect(test4,3)); //3
-
+		
 		int[] test5 = new int[]{4, 0, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2};
 		System.out.println(x.quickselect(test5,0)); //0
-		System.out.println(x.quickselect(test5,3));
-		System.out.println(x.quickselect(test5,6));
-		System.out.println(x.quickselect(test5,9));
-		System.out.println(x.quickselect(test5,13)); */
+		System.out.println(x.quickselect(test5,3)); //3
+		System.out.println(x.quickselect(test5,6)); //3
+		System.out.println(x.quickselect(test5,9)); //3
+		System.out.println(x.quickselect(test5,13)); //4
 		
-		
+		*/
 	}
 
 }
