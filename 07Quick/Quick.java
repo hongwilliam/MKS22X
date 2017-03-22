@@ -7,59 +7,17 @@ public class Quick{
 		int range = (max - min) + 1;     
 		return (int)(Math.random() * range) + min; }
 
-	
-	//i realized my preivous function was a bit slow (2 loops)
-	//after some trial and error...
 	public static int part(int[] data, int start, int end){
 		int randomIndex = randomWithRange(start,end);
 		int partition = data[randomIndex];
 		//System.out.println(partition); //for testing purposes only
 		
-		/** 
-		//variables that will change dynamically
-		int right = start, left = end, swap1 = 0, swap2 = 0;
-		
-		while (right < left){
-			
-			//when the element at the index going right is equal to partition
-			//we move it to the left as the index keeps moving on to the right
-			if (data[right] == partition){
-				swap1 = data[right];
-				swap2 = data[right+1];
-				data[right] = swap2;
-				data[right+1] = swap1; }
-				
-			//same idea as above but applying to the index that is going left and checking
-			//we move the element to the right 
-			if (data[left] == partition){
-				swap1 = data[left];
-				swap2 = data[left-1];
-				data[left] = swap2;
-				data[left-1] = swap1; } 
-				
-			//remember: all items less than partition are to the left
-			if (data[right] > data[left]){
-				swap1 = data[right];
-				swap2 = data[left];
-				data[left] = swap1;
-				data[right] = swap2; }
-				
-			//update the index checking variables
-			if (data[left] > partition){
-				left -= 1; }
-				
-			if (data[right] < partition){
-				right += 1; }
-			
-		} */
 		
 		//swap the partition and beginning element first
 		data[randomIndex] = data[start];
 		data[start] = partition;
 
-		//these variables help keep track of the elements being compared
 		int i1 = start+1, i2 = start+1, goal = start;
-		//going from left to right, this is a O(N) operation
 		//objective is to get variable "goal" to the end
 		while (i1 <= end){
 			if (data[i1] < partition){
@@ -112,9 +70,33 @@ public class Quick{
 		return data[answer];
 	}
 	
+	private static void helper(int[] data, int start, int end){
+		if (start >= end){
+			return; }
+			
+		int partition = part(data,start,end);
+		helper(data, start, partition-1);
+		helper(data, partition+1, end);
+		
+	}
+	
+	public static void quicksort(int[] data){
+		helper(data, 0, data.length-1); }
+		
+	public static String toString(int[] data){
+		String answer = "";
+		int i=0;
+		while (i < data.length){
+			answer += data[i] + " ";
+			i += 1; }
+			
+		return answer;
+	}
+	
+	
 	//testing...
 	public static void main (String[] args){
-		/* Quick x = new Quick();
+		/** Quick x = new Quick();
 		
 		// int[] test3 = new int[]{};
 		//System.out.println(quickselect(test3,0));//Invalid k
@@ -149,7 +131,37 @@ public class Quick{
 		System.out.println(x.quickselect(test5,9)); //3
 		System.out.println(x.quickselect(test5,13)); //4
 		
-		*/
+		x.quicksort(test5);
+		System.out.println(x.toString(test5));
+		
+		int[] test6 = new int[]{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,};
+		x.quicksort(test6);
+		System.out.println(x.toString(test6));
+		
+		int[] test7 = new int[]{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 5, 1, 2,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,};
+		x.quicksort(test7);
+		System.out.println(x.toString(test7)); */
+		
 	}
 
 }
