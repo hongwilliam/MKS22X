@@ -7,39 +7,46 @@ public class Quick{
 		int range = (max - min) + 1;     
 		return (int)(Math.random() * range) + min; }
 
+	//UPDATE: used dutch flag partion psuedo code from class
 	public static int part(int[] data, int start, int end){
-		int randomIndex = randomWithRange(start,end);
+		int randomIndex = randomWithRange(start, end);
 		int partition = data[randomIndex];
 		//System.out.println(partition); //for testing purposes only
 		
-		
 		//swap the partition and beginning element first
-		data[randomIndex] = data[start];
-		data[start] = partition;
+		int swap1 = data[randomIndex], swap2 = data[start];
+		data[randomIndex] = swap2;
+		data[start] = swap1;
 
-		int i1 = start+1, i2 = start+1, goal = start;
-		//objective is to get variable "goal" to the end
-		while (i1 <= end){
-			if (data[i1] < partition){
+		int i=start, low = start, high = end; 
+		while (i <= high){
+			//"ignore duplicates"
+			if (data[i] == partition){
+				i += 1; }
 				
-				int larger = data[i2];
-				//data[i] is small so keep it to left of partition
-				data[i2] = data[i1];
+			else{
+				if (data[i] < partition){
+					//swap the current element and the low
+					swap1 = data[i];
+					swap2 = data[low];
+					data[i] = swap2;
+					data[low] = swap1; 
 				
-				//as the i is farther down to the right, it should assume "larger" values
-				data[i1] = larger;
-				
-				//our "goal" is being updated as well
-				goal = i2;
-				i2 += 1; }
-				
-			i1 += 1;
-		}
-	
-		data[start] = data[goal];
-		data[goal] = partition;
-
-		return goal;
+					low += 1;
+					i += 1; }
+					
+				else{
+					//swap the current and the high
+					swap1 = data[i];
+					swap2 = data[high];
+					data[i] = swap2;
+					data[high] = swap1;
+					
+					high -= 1; }
+			}
+		}	
+		
+		return (low + high) / 2;
 	}
 	
 	public static int quickselect(int[] data, int k){
@@ -71,12 +78,48 @@ public class Quick{
 	}
 	
 	private static void helper(int[] data, int start, int end){
+		//base case
 		if (start >= end){
 			return; }
 			
-		int partition = part(data,start,end);
-		helper(data, start, partition-1);
-		helper(data, partition+1, end);
+		int randomIndex = randomWithRange(start, end);
+		int partition = data[randomIndex];
+		//System.out.println(partition); //for testing purposes only
+		
+		//swap the partition and beginning element first
+		int swap1 = data[randomIndex], swap2 = data[start];
+		data[randomIndex] = swap2;
+		data[start] = swap1;
+		
+		//the idea is nearly the same for the partition function - dutch flag
+		int i = start, low = start, high = end;
+		while (i <= high){
+		
+			if (data[i] == partition){
+				i += 1; }
+			else{
+				if (data[i] < partition){
+					swap1 = data[i];
+					swap2 = data[low];
+					data[i] = swap2;
+					data[low] = swap1;
+					
+					i += 1;
+					low += 1; }
+					
+				else{
+					swap1 = data[i];
+					swap2 = data[high];
+					data[i] = swap2;
+					data[high] = swap1;
+					
+					high -= 1; }
+					
+			}
+		}
+		
+		helper(data, start, low-1);
+		helper(data, high+1, end);
 		
 	}
 	
@@ -96,7 +139,7 @@ public class Quick{
 	
 	//testing...
 	public static void main (String[] args){
-		/** Quick x = new Quick();
+		/* Quick x = new Quick();
 		
 		// int[] test3 = new int[]{};
 		//System.out.println(quickselect(test3,0));//Invalid k
