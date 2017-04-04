@@ -1,7 +1,7 @@
 public class LNode{
 
-	private int value;
-	private LNode next;
+	public int value;
+	public LNode next;
 
 	//2 constructors required
 	public LNode(int myValue){
@@ -10,5 +10,20 @@ public class LNode{
 	public LNode(int myValue, LNode myNext){
 		value = myValue;
 		next = myNext; }
+		
+	//setters
+	public void setValue(int myValue){
+		value = myValue; }
+	
+	public void setNext(LNode myNode){
+		next = myNode; }
+	
+	//getters
+	public int getValue(){
+		return value; }
+		
+	public LNode getNext(){
+		return next; }
 
+	public static void main(String[] args){}
 }
