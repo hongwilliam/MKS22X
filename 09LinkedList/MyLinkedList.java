@@ -3,8 +3,42 @@ import java.util.*;
 
 public class MyLinkedList implements Iterable<Integer>{
 	
-	public LNode head, tail;
-	public int size;
+	public class LNode{
+
+		public int value;
+		public LNode previous = null, next = null;
+
+		//2 constructors required
+		public LNode(int myValue){
+			value = myValue; }
+		
+		public String toString(){
+			return value + ""; }
+		
+		//setters
+		public void setValue(int myValue){
+			value = myValue; }
+	
+		public void setPrevious(LNode myNode){
+			previous = myNode;  }
+		
+		public void setNext(LNode myNode){
+			next = myNode; }
+	
+		//getters
+		public int getValue(){
+			return value; }
+		
+		public LNode getPrevious(){
+			return previous; }
+		
+		public LNode getNext(){
+			return next; }
+
+	}
+	
+	LNode head = null, tail = null;
+	int size = 0;
 	
 	//iterator class
 	private class MyLinkedListIterator implements Iterator<Integer>{
@@ -16,8 +50,8 @@ public class MyLinkedList implements Iterable<Integer>{
 		public Integer next(){
 			if (hasNext()){
 				LNode original = start;
-				start = start.getNext();
-				return new Integer(original.getValue()); }
+				start = start.next;
+				return new Integer(original.value); }
 			else{
 				throw new NoSuchElementException(); }
 		}
@@ -30,10 +64,7 @@ public class MyLinkedList implements Iterable<Integer>{
 		return new MyLinkedListIterator(); }
 	
 	//default construtor
-	public MyLinkedList(){
-		head = null;
-		tail = null;
-		size = 0; }
+	public MyLinkedList(){}
 		
 	//Phase I methods
 	
@@ -50,15 +81,15 @@ public class MyLinkedList implements Iterable<Integer>{
 		int i = 1; 
 		
 		if (size == 0){
-			answer = "[]"; }
+			answer = "["; }
 		else{
 			LNode start = head;
-			answer = "[" + start.getValue();
-			start = start.getNext(); 
+			answer = "[" + start.value;
+			start = start.next; 
 			
 			while (i < size){
-				answer += ", " + start.getValue();
-				start  = start.getNext(); 
+				answer += ", " + start.value;
+				start  = start.next; 
 				i += 1; }
 		}
 				
@@ -67,26 +98,26 @@ public class MyLinkedList implements Iterable<Integer>{
 			
 	private LNode getNthNode(int n){
 		if(n < 0 || n > size){
-	    throw new IllegalArgumentException(); }
+			throw new IllegalArgumentException(); }
 		
 		LNode start;
 		
 		//in what half is the n in?
-		if (n >= size/2){
+		if (n <= size/2){
 			start = head;
-			int i = 0;
 			
+			int i = 0;
 			while (i < n){
-				start = start.getNext();
+				start = start.next;
 				i += 1; }
 		}
 		
 		else{
 			start = tail;
-			int i = size-1;
 			
+			int i = size-1;
 			while (i > n){
-				start = start.getPrevious();
+				start = start.previous;
 				i -= 1; }
 		}
 		
@@ -94,7 +125,7 @@ public class MyLinkedList implements Iterable<Integer>{
 	
 	//return value of element specified at the index
 	public int get(int index){
-		return getNthNode(index).getValue(); }
+		return getNthNode(index).value; }
 	
 	//change value of element specified at index to newValue, return original
 	public int set (int index, int newValue){
@@ -102,8 +133,8 @@ public class MyLinkedList implements Iterable<Integer>{
 			throw new IllegalArgumentException(); }
 			
 		LNode start = getNthNode(index);
-		int original = start.getValue();
-		start.setValue(newValue);
+		int original = start.value;
+		start.value = newValue;
 		
 		return original; }
 	
@@ -111,13 +142,13 @@ public class MyLinkedList implements Iterable<Integer>{
 	
 	//return index of 1st occurence of value in list, -1 if not found
 	public int indexOf(int value){
-		LNode current = head; 
+		LNode start = head; 
 		int i=0;
 		
 		while (i < size){
-			if (current.getValue() == value){
+			if (start.value == value){
 				return i; }
-			current = current.getNext(); 
+			start = start.next; 
 			i += 1; }
 			
 		return -1;
@@ -139,23 +170,23 @@ public class MyLinkedList implements Iterable<Integer>{
 		else{
 			//making the head the new node
 			if (index == 0){
-				head.setPrevious(node);
-				node.setNext(head);
+				head.previous = node;
+				node.next = head;
 				head = node; }
 				
 			else{
 				//making the tail the new node
 				if (index == size){
-					tail.setNext(node);
-					node.setPrevious(tail);
+					tail.next = node;
+					node.previous = tail;
 					tail = node; }
 					
 				else{
 					LNode move = getNthNode(index-1);
-					node.setPrevious(move);
-					node.setNext(move.getNext());
-					move.getNext().setPrevious(node);
-					move.setNext(node); }
+					node.previous = move;
+					node.next = move.next;
+					move.next.previous = node;
+					move.next = node; }
 			}	
 		}
 		
@@ -169,50 +200,92 @@ public class MyLinkedList implements Iterable<Integer>{
 			
 		int original = 0;
 		
-		if (index == 0){
-			original = head.getValue();
-			head = head.getNext();
-			head.setPrevious(null); }
+		if (size == 1){
+			original = head.value;
+			head = null;
+			tail = null; }
 		else{
-			if (index == size-1){
-				original = tail.getValue();
-				tail = tail.getPrevious();
-				tail.setNext(null); }
-				
+			if (index == 0){
+				original = head.value;
+				head = head.next;
+				head.previous = null; }
 			else{
-				LNode node = getNthNode(index);
-				original = node.getValue();
-				node.getPrevious().setNext(node.getNext());
-				node.getNext().setPrevious(node.getPrevious());
+				if (index == size-1){
+					original = tail.value;
+					tail = tail.previous;
+					tail.next = null; }
+				else{
+					LNode node = getNthNode(index);
+					original = node.value;
+					node.previous.next = node.next;
+					node.next.previous = node.previous; }
 			}
 		}
 			
 		size -= 1;
 		return original; }
-	
-		/** 
-		//testing
-		public static void main(String[] args){
-			MyLinkedList L = new MyLinkedList();
-			
-			L.add(0,1);
-			L.add(1,2);
-			L.add(2,4);
-			L.add(3,8);
-			L.add(4,16);
-			L.add(5,32);
-			
-			System.out.println(L.size()); //6
-			System.out.println(L.toString()); //[1, 2, 4, 8, 16, 32];
-			System.out.println(L.get(3)); //8
-			System.out.println(L.indexOf(8)); //3
-			System.out.println(L.indexOf(128)); //-1
-			L.add(64);
-			System.out.println(L.toString()); //[1, 2, 4, 8, 16, 32, 64];
-			L.set(0,0);
-			System.out.println(L.toString()); //[0, 2, 4, 8, 16, 32, 64];
-			L.remove(6);
-			System.out.println(L.toString()); //[0, 2, 4, 8, 16, 32];
-		} */
 		
+		
+	
+	//used a classmate's test cases
+	
+    public static void main(String [] args){
+		/**
+		//Testing: constructor, toString, size, add, get, remove
+		
+		MyLinkedList a= new MyLinkedList();
+		System.out.println(a.toString()+"\nSize: "+a.size());//[], size=0
+		for(int i=0; i<20; i++){
+			a.add(i);
+			if(a.get(a.size()-1)%2==0)
+			a.remove(a.size()-1);
+			//System.out.println(a);//Check if all nums arent odd
+		}
+	
+		System.out.println(a+"\nSize: "+a.size());//odds 0-20 in order, size=10
+	
+		//Testing: set, indexOf, add(i,v); reinforce others
+		for(int i=0; i<10; i++){
+			a.set(i,i*100);
+		}
+	
+		System.out.println(a+"\nSize: "+a.size());//mulitples of 100, size=10
+		for(int i=0; i<10; i++){
+			a.set(i,a.indexOf(i*100));
+		}
+	
+        System.out.println(a+"\nSize: "+a.size());//0-9 in order, size=10
+		a.remove(1);
+		a.add(1,1);
+		for(int i=0; i<10; i++){
+			a.add(0,i*-1-1);
+		}
+		a.add(a.size(),10);
+	
+		System.out.println(a+"\nSize: "+a.size());//-10-10 in order, size=21
+	
+		//Testing: Iterator
+		MyLinkedList data = new MyLinkedList();
+		int i = 0;
+		while(i < 15){
+			data.add(i);
+			i++;
+		}
+
+		System.out.println("\nContents: "+data);
+		System.out.println("Standard loop:");
+
+		for(int n = 0; n < data.size(); n++){
+			System.out.print(data.get(n)+" ");
+		}
+		System.out.println();
+		System.out.println("for-each loop:");
+		for(Integer s : data){
+			System.out.print(s+" ");
+		}
+		//should be same
+		*/
+		}
+	
+
 }
