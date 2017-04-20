@@ -7,30 +7,30 @@ public class MyDeque{
 	
 	//useful but not required methods
 	public boolean emptyCheck(){
-		return data[front] == null; }
+		return array[front] == null; }
 		
 	//when you reach the end, wrap around
 	public boolean fullCheck(){
-		return (!emptyCheck() && (front == (back+1) % data.length)); }
+		return (!emptyCheck() && (front == (back+1) % array.length)); }
 		
 	public void resize(){
 		int n = front;
 		//double in capacity if no space left
-		String[] temp = new String[data.length * 2];
+		String[] temp = new String[array.length * 2];
 		
 		int i = 0;
-		while (i < data.length){
-			if (n == data.length){
+		while (i < array.length){
+			if (n == array.length){
 				n = 0; }
 				
-			temp[i] = data[n];
+			temp[i] = array[n];
 			n += 1;
 			i += 1;
 		}
 		
 		data = temp;
 		front = 0;
-		back = (data.length / 2) - 1;
+		back = (array.length / 2) - 1;
 	} 
 	
 	public addFirst(String s){
@@ -39,14 +39,14 @@ public class MyDeque{
 		
 		else{
 			if (front == 0){
-				front = data.length; }
+				front = array.length; }
 				
 			else{
 				resize(); }
 		}
 		
 		front -= 1;
-		data[front] = s;
+		array[front] = s;
 	}
 	
 	public void addLast(String s){
@@ -54,7 +54,7 @@ public class MyDeque{
 			throw new NullPointerException(); }
 			
 		else{
-			if (back == data.length -1){
+			if (back == array.length -1){
 				back = -1; }
 				
 			else{
@@ -62,19 +62,19 @@ public class MyDeque{
 		}
 		
 		back += 1;
-		data[back] = s;
+		array[back] = s;
 	}
 	
 	public String removeLast(){
 		if (emptyCheck()){
 			throw new NoSuchElementException(); }
 			
-		String original = data[back];
-		data[back] = null;
+		String original = array[back];
+		array[back] = null;
 		back -= 1;
 		
 		if (back == -1){
-			back = data.length = 1; }
+			back = array.length = 1; }
 			
 		return original;
 	}
@@ -83,15 +83,16 @@ public class MyDeque{
 		if (emptyCheck()){
 			throw new NoSuchElementException(); }
 			
-		String original = data[front];
-		data[front] = null;
+		String original = array[front];
+		array[front] = null;
 		front += 1;
 		
-		if (front == data.length){
+		if (front == array.length){
 			front = 0; }
 		
 		return original;
 	}
 	
-	
+	public static void main(String [] args){}
+
 }
