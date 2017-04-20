@@ -3,7 +3,7 @@ import java.util.*;
 public class MyDeque{
 
 	String[] array = new String[5];
-	int front, back;
+	int front = 0, back = 4; //arbitrary values
 	
 	//useful but not required methods
 	public boolean emptyCheck(){
@@ -13,10 +13,25 @@ public class MyDeque{
 	public boolean fullCheck(){
 		return (!emptyCheck() && (front == (back+1) % data.length)); }
 		
-	/* fill this in later
 	public void resize(){
-			
-	} */
+		int n = front;
+		//double in capacity if no space left
+		String[] temp = new String[data.length * 2];
+		
+		int i = 0;
+		while (i < data.length){
+			if (n == data.length){
+				n = 0; }
+				
+			temp[i] = data[n];
+			n += 1;
+			i += 1;
+		}
+		
+		data = temp;
+		front = 0;
+		back = (data.length / 2) - 1;
+	} 
 	
 	public addFirst(String s){
 		if (s == null){
@@ -26,8 +41,8 @@ public class MyDeque{
 			if (front == 0){
 				front = data.length; }
 				
-			/* else{
-				resize(); } */
+			else{
+				resize(); }
 		}
 		
 		front -= 1;
@@ -42,8 +57,8 @@ public class MyDeque{
 			if (back == data.length -1){
 				back = -1; }
 				
-			/* else{
-			 resize(); } */
+			else{
+			 resize(); } 
 		}
 		
 		back += 1;
