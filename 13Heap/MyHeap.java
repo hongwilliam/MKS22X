@@ -54,7 +54,34 @@ public class MyHeap{
 		int i = 1;
 		
 		String swap = "";
-		while (i != size){
+		boolean traversing = true;
+		
+		while (traversing && 2*i <= size){
+			if (2*i+1 <= size && array[2*i+1].compareTo(array[2*i]) * direction > 0){
+				if (array[i].compareTo(array[2*i+1]) * direction < 0){
+					swap = array[2*i+1];
+					array[2*i+1] = array[i];
+					array[i] = swap;
+					i = 2*i+1; }
+				else{
+					traversing = false; }
+			
+			}
+			
+			else{
+				if (array[i].compareTo(array[2*i]) * direction < 0){
+					swap = array[2*i];
+					array[2*i] = array[i];
+					array[i] = swap;
+					i = 2*i; }
+				else{
+					traversing = false; }
+			}
+			
+		}
+	}
+		
+		/** while (i != size){
 			
 			//should child1 get swapped?
 			if(array[i].compareTo(array[2*i]) * direction < 0){
@@ -70,8 +97,7 @@ public class MyHeap{
 					array[2*i +1] = array[i];
 					array[i] = swap;
 					i = 2*i +1; }
-		}
-	}
+		} */
 	
 	private void resize(){
 		String[] resized = new String[size*2];
@@ -83,7 +109,5 @@ public class MyHeap{
 		array = resized;
 	}
 	
+	
 }
-	
-
-	
