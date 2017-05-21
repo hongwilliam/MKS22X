@@ -95,23 +95,33 @@ public class RunningMedian{
 				}
 			}
 		}
-	}
+	} 
+	
 
 	//for a max heap: look at largest of small heap
 	//for a min heap: look at smallest of large heap
 	//O(1) time - make sure to typecast to double otherwise errors occur
 	public double getMedian(){
 	
-		double minRoot = (double) min.peek();
-		double maxRoot = (double) max.peek();
-		
-		if (minSize == maxSize){
-			return (minRoot + maxRoot) / 2; }
-		else{
-			if (minSize > maxSize){
-				return minRoot; }
+		if ( (minSize == 1 && maxSize == 0) || (minSize == 0 && maxSize == 1) ){
+			if (minSize == 1){
+				return (double) min.peek(); }
 			else{
-				return maxRoot;	}
+				return (double) max.peek(); }
+		}
+		
+		else{
+			double minRoot = (double) min.peek();
+			double maxRoot = (double) max.peek();
+		
+			if (minSize == maxSize){
+				return (minRoot + maxRoot) / 2; }
+			else{
+				if (minSize > maxSize){
+					return minRoot; }
+				else{
+					return maxRoot;	}
+			}
 		}
 	}
 
@@ -158,10 +168,11 @@ public class RunningMedian{
 		private void pushUp(){
 			int i = size;
 			while(i != 1 && (array[i].compareTo(array[i/2]) * direction) > 0){
-				Integer swap = array[i/2];
-				array[i/2] = array[i];
+				int p = i/2;
+				Integer swap = array[p];
+				array[p] = array[i];
 				array[i] = swap;
-				i /= 2; }
+				i = p; }
 		}
 	
 		//note: 2i and 2i + 1 are the children
@@ -174,25 +185,30 @@ public class RunningMedian{
 			while (traversing && 2*i <= size){
 				if (2*i+1 <= size && array[2*i+1].compareTo(array[2*i]) * direction > 0){
 					if (array[i].compareTo(array[2*i+1]) * direction < 0){
-						swap = array[2*i+1];
-						array[2*i+1] = array[i];
+						int c2 = 2*i + 1;
+						swap = array[c2];
+						array[c2] = array[i];
 						array[i] = swap;
-						i = 2*i+1; }
+						i = c2; }
 					else{
 						traversing = false; }
 				}
 			
 			else{
 				if (array[i].compareTo(array[2*i]) * direction < 0){
-					swap = array[2*i];
-					array[2*i] = array[i];
+					int c1 = 2*i;
+					swap = array[c1];
+					array[c1] = array[i];
 					array[i] = swap;
-					i = 2*i; }
+					i = c1; }
 				else{
 					traversing = false; }
 				}
 			}
 		}
+		
+		public String toString(){
+			return java.util.Arrays.toString(array); }
 		
 		private void resize(){
 			Integer[] resized = new Integer[size*2];
@@ -210,7 +226,18 @@ public class RunningMedian{
 	public static void main(String[] args){
 		RunningMedian r = new RunningMedian();
 		r.add(-5);
-		System.out.println(r.getMedian());
+		//System.out.println(r.getMedian()); //-5.0
+		
+		RunningMedian r1 = new RunningMedian();
+		r1.add(1);
+		r1.add(2);
+		r1.add(3);
+		//System.out.println(r1.getMedian()); //2.0
+		
+		RunningMedian r2 = new RunningMedian();
+		r2.add(-1);
+		r2.add(1);
+		//System.out.println(r2.getMedian()); //0.0
 	}
 
 }
