@@ -27,7 +27,7 @@ public class FrontierPriorityQueue implements Frontier{
 		
 		public Location remove(){
 			if (size == 0){
-				throw new IllegalArgumentException(); }
+				throw new NoSuchElementException(); }
 			
 			Location original = array[1]; //the root
 			array[1] = array[size];
@@ -38,7 +38,7 @@ public class FrontierPriorityQueue implements Frontier{
 		
 		public Location peek(){
 			if (size == 0){
-				throw new IllegalArgumentException(); }
+				throw new NoSuchElementException(); }
 			
 			return array[1]; //the root 
 		}
@@ -86,20 +86,20 @@ public class FrontierPriorityQueue implements Frontier{
 		}
 	
 	
-	private void resize(){
-		Location[] resized = new Location[size*2];
-		int i=1;
-		while (i <= size){
-			resized[i] = array[i];
-			i += 1; }
+		private void resize(){
+			Location[] resized = new Location[size*2];
+			int i=1;
+			while (i <= size){
+				resized[i] = array[i];
+				i += 1; }
 			
-		array = resized;
-	}
+			array = resized;
+		}
 
 	}
 
 	public FrontierPriorityQueue(){
-		FPQ = new MyHeap(); }
+		FPQ = new MyHeap(false); }
 		
 	public void add (Location L){
 		FPQ.add(L); }
