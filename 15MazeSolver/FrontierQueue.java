@@ -12,5 +12,8 @@ public class FrontierQueue implements Frontier{
 		
 	public Location next(){
 		return FQ.remove(); }
+		
+	public boolean hasNext(){
+		return (FQ.size() != 0); }
 	
 }

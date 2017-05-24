@@ -26,6 +26,12 @@ public class Location implements Comparable<Location>{
 		
 	public Location getPrev(){
 		return previous; }
+		
+	public boolean getAStar(){
+		return aStar; }
+		
+	public void setAStar(boolean b){
+		aStar = b; }
 
 	public int getDistance(Location L){
 		int rowDiff = (L.getR() - getR());

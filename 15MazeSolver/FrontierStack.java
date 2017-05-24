@@ -12,5 +12,8 @@ public class FrontierStack implements Frontier{
 		
 	public Location next(){
 		return FS.pop(); }
+		
+	public boolean hasNext(){
+		return (FS.size() != 0); }
 	
 }

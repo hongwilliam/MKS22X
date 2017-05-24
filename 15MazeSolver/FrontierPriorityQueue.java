@@ -95,6 +95,9 @@ public class FrontierPriorityQueue implements Frontier{
 			
 			array = resized;
 		}
+		
+		public int size(){
+			return size; }
 
 	}
 
@@ -106,5 +109,8 @@ public class FrontierPriorityQueue implements Frontier{
 		
 	public Location next(){
 		return FPQ.remove(); }
+		
+	public boolean hasNext(){
+		return (FPQ.size() != 0); }
 		
 }

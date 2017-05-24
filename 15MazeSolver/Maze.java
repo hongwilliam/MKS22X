@@ -2,33 +2,18 @@ import java.io.*;
 import java.io.FileNotFoundException;
 import java.util.*;
 public class Maze{
-
     private static final String CLEAR_SCREEN =  "\033[2J";
     private static final String HIDE_CURSOR =  "\033[?25l";
     private static final String SHOW_CURSOR =  "\033[?25h";
 
-    Location start,end;
-    private char[][]maze;
-    private int maxRows,maxCols;
-
-    public char whatIs(int r, int c, int dir){
-	if(dir == 0)
-	    return maze[r - 1][c];
-	if(dir == 1)
-	    return maze[r][c + 1];
-	if(dir == 2)
-	    return maze[r + 1][c];
-	if(dir == 3)
-	    return maze[r][c - 1];
-	else
-	    return '?';
-    }
-
-
+    Location start, end;
+    private char[][] maze;
+    private int maxRows, maxCols;
 
     public Location getStart(){
 	return start;
     }
+    
     public Location getEnd(){
 	return end;
     }
@@ -43,6 +28,7 @@ public class Maze{
     public void clearTerminal(){
 	System.out.println(CLEAR_SCREEN+"\033[1;1H");
     }
+    
     public Maze(String filename){
 	ArrayList<char[]> lines = new ArrayList<char[]>();
 	int startr=-1, startc=-1;
@@ -100,16 +86,6 @@ public class Maze{
 	start = new Location(startr,startc,null,0,d,false);
     }
 
-    public Location getLocation(int r, int c, boolean astar, Location prev){
-	Location a = new Location(r,
-				  c,
-				  prev,
-				  Math.abs(r - start.getR()) + Math.abs(c - start.getC()),
-				  Math.abs(r - end.getR()) + Math.abs(c - end.getC()),
-				  astar);
-	return a;
-    }
-
     public String toString(int delay){
 	try{
 	    Thread.sleep(delay);
@@ -118,6 +94,7 @@ public class Maze{
 	}
 	return HIDE_CURSOR+CLEAR_SCREEN+go(1,1)+colorize(toString())+SHOW_CURSOR;
     }
+    
     public String toString(){
 	int maxr = maze.length;
 	int maxc = maze[0].length;
@@ -139,9 +116,11 @@ public class Maze{
     public char get(int row,int col){
 	return maze[row][col];
     }
+    
     public void set(int row,int col, char n){
 	maze[row][col] = n;
     }
+    
     public static String colorize(String s){
 	String ans = "";
 	Scanner in = new Scanner(s);
