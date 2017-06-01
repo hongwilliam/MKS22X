@@ -3,7 +3,7 @@ import java.util.*;
 public class MyDeque{
 
 	String[] array = new String[5];
-	int front = 0, back = 4; //arbitrary values
+	int front, back; 
 	
 	//useful but not required methods
 	public boolean emptyCheck(){
@@ -28,12 +28,12 @@ public class MyDeque{
 			i += 1;
 		}
 		
-		data = temp;
+		array = temp;
 		front = 0;
 		back = (array.length / 2) - 1;
 	} 
 	
-	public addFirst(String s){
+	public void addFirst(String s){
 		if (s == null){
 			throw new NullPointerException(); }
 		
@@ -74,7 +74,7 @@ public class MyDeque{
 		back -= 1;
 		
 		if (back == -1){
-			back = array.length = 1; }
+			back = array.length - 1; }
 			
 		return original;
 	}

@@ -103,6 +103,8 @@ public class MyLinkedList implements Iterable<Integer>{
 		LNode start;
 		
 		//in what half is the n in?
+		
+		//come in from the left
 		if (n <= size/2){
 			start = head;
 			
@@ -112,6 +114,7 @@ public class MyLinkedList implements Iterable<Integer>{
 				i += 1; }
 		}
 		
+		//come in from the right
 		else{
 			start = tail;
 			
@@ -123,8 +126,12 @@ public class MyLinkedList implements Iterable<Integer>{
 		
 		return start; }
 	
+	//added extra case to throw exception
 	//return value of element specified at the index
 	public int get(int index){
+		if (index < 0 || index > size){
+			throw new IllegalArgumentException(); }
+			
 		return getNthNode(index).value; }
 	
 	//change value of element specified at index to newValue, return original
@@ -271,10 +278,8 @@ public class MyLinkedList implements Iterable<Integer>{
 			data.add(i);
 			i++;
 		}
-
 		System.out.println("\nContents: "+data);
 		System.out.println("Standard loop:");
-
 		for(int n = 0; n < data.size(); n++){
 			System.out.print(data.get(n)+" ");
 		}
